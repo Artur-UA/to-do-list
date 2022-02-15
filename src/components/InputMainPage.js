@@ -1,13 +1,14 @@
 import React from 'react';
+import './InputMainPage.css';
 
 const InputMainPage = () => {
     const searchText = 'Search';
     const searchStyle = {
-        fontSize : '40px',
+        fontSize : '20px',
         color : 'blue'
     }
     return (
-        <input 
+        <input className='inputMainPage'
             placeholder= {searchText}
             style = {searchStyle} />
     )

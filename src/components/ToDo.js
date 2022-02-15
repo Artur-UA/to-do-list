@@ -3,13 +3,14 @@ import ToDoItem from './ToDoItem';
 import './ToDo.css';
 
 /* const toDoList = ['Learn React', 'Listen music', 'Create app']; */
-const Todo = ( {todos}) => {
+const Todo = ( {todos, onDel}) => {
     const element = todos.map((item) => {
 
         const {id, ...otherProps} = item; 
         return(
             <li className='list-group-item' key={id}>
-                <ToDoItem /* label={item.label} important={item.important}  вместо этого  можно так, но так передастся все { ...item }*/ {...otherProps} />
+                <ToDoItem /* label={item.label} important={item.important}  вместо этого  можно так, но так передастся все { ...item }*/ {...otherProps} 
+                onDeleted={ () => onDel(id)}/>
             </li>
         );
     });

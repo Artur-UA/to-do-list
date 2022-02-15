@@ -1,8 +1,23 @@
-import React from 'react';
+import React, {Component} from 'react';
+import './InputMainFilter.css';
 
-const InputMainFilter = () => {
+export default class InputMainFilter extends Component{
+
+    render(){
+        return (
+            <div className='inputFilter'>
+                <button type='button' className='btn btn-info'>All</button>
+                <button type='button' className='btn btn-outline-second'>Active</button>
+                <button type='button' className='btn btn-outline-second'>Done</button>
+            </div>
+        )
+    }
+}
+
+
+/* const InputMainFilter = () => {
     return (
-        <div>
+        <div className='inputFilter'>
             <button type='button' className='btn btn-info'>All</button>
             <button type='button' className='btn btn-outline-second'>Active</button>
             <button type='button' className='btn btn-outline-second'>Done</button>
@@ -10,4 +25,4 @@ const InputMainFilter = () => {
     )
 };
 
-export default InputMainFilter;
+export default InputMainFilter; */
