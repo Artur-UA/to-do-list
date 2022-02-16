@@ -14,11 +14,25 @@ export default class App extends Component{
 
     state = {
         toDoList : [
-            {label: 'Learn React', important: false, id: 1},
+            /* {label: 'Learn React', important: false, id: 1},
             {label: 'Listen music', important: true, id: 2},
-            {label: 'Create app', important: false, id: 3}
+            {label: 'Create app', important: false, id: 3} */
+            this.createItem('Learn React'),
+            this.createItem('Listen music'),
+            this.createItem('Create app')
+
         ]
     }
+
+    createItem(text){
+        return{
+            label: text, 
+            important: false,
+            done: false,
+            id: this.startId++
+        }
+    }
+
 
     onDele = (id) => {
         /* console.log(id); */
@@ -26,7 +40,6 @@ export default class App extends Component{
             const idx = state.toDoList.findIndex( (el) => el.id === id);
             const before = state.toDoList.slice(0, idx);
             const after = state.toDoList.slice(idx + 1);
-            console.log(after);
             const newToDoList = [...before, ...after];
             return {
                 toDoList: newToDoList
@@ -34,14 +47,26 @@ export default class App extends Component{
         })
     }
 
+    toggleProperty(arr, id, prop){
+        const idx = arr.findIndex( (el) => el.id === id);
+            const oldItem = arr[idx];
+            const newItem = {...oldItem, [prop]: !oldItem[prop] };
+
+            return [
+                    ...arr.slice(0, idx),
+                    newItem,
+                    ...arr.slice(idx + 1)
+                ]
+    }
     
     addNewItems = (text) =>{
         console.log(text);
-        const newItem = {
+        const newItem = this.createItem(text)
+       /*  const newItem = {
             label: text,
             important: false,
             id: this.startId++
-        }
+        } */
         this.setState( (state) => {
             const newAddIdState = [ ...state.toDoList, newItem];
             return{
@@ -50,11 +75,41 @@ export default class App extends Component{
         })
     }
 
+    onItemImportant = (id) => {
+        console.log('impor', id);
+        this.setState( (state) => {
+            return {
+                toDoList: this.toggleProperty( state.toDoList, id, 'important' )
+            }
+        })
+    }
+    onItemDone = (id) => {
+        console.log('done', id);
+        this.setState( (state) => {
+            /* const idx = state.toDoList.findIndex( (el) => el.id === id);
+            const oldItem = state.toDoList[idx];
+            const newItem = {...oldItem, done: !oldItem.done};
+
+            const newArr = [
+                ...state.toDoList.slice(0, idx),
+                newItem,
+                ...state.toDoList.slice(idx + 1)
+            ]
+
+            return {
+                toDoList: newArr
+            } */
+            return {
+                toDoList: this.toggleProperty( state.toDoList, id, 'done' )
+            }
+        })
+    }
     render(){
 
-    
-        const itemToDo = 1
-        const itemDone = 3;
+        const itemDone = this.state.toDoList.filter( (el) => el.done ).length;
+        const itemToDo = this.state.toDoList.length - itemDone;
+
+
         const isLoggin = true;
         const ButtonLogin = <button>Log in</button>
     
@@ -65,7 +120,7 @@ export default class App extends Component{
                 <AppHeader toDo={itemToDo} toDone={itemDone}/>
                 <InputMainPage/>
                 <InputMainFilter/>
-                <Todo todos={this.state.toDoList} onDel={ /* (id) => {console.log(id)} */ this.onDele }/>
+                <Todo todos={this.state.toDoList} onDel={ /* (id) => {console.log(id)} */ this.onDele } onItemDone={this.onItemDone} onItemImportant={this.onItemImportant}/>
                 <AddItem addNewItem={this.addNewItems}/>
             </div>
         )

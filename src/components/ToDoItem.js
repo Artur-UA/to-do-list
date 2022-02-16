@@ -3,10 +3,10 @@ import './ToDoItem.css'
 
 export default class ToDoItem extends Component{
 
-    state = {
+    /* state = {
         done: false,
         important: false
-    }
+    } */
     onLabelClick = () => {
         console.log(`Done: ${this.props.label}`);
         this.setState( (state) => {
@@ -16,16 +16,16 @@ export default class ToDoItem extends Component{
         });
     }
 
-    onImportant = () => {
+    /* onImportant = () => {
         this.setState( ({important}) => {
             return {
                 important: !important
             }
         })
-    }
+    } */
     render(){
-        const { label, onDeleted } = this.props;
-        const { done, important} = this.state;
+        const { label, onDeleted, onItemDone, onItemImportant, done, important} = this.props;
+        /* const { done, important} = this.state; */
 
         let toDoClass = 'todo_item';
         
@@ -45,12 +45,12 @@ export default class ToDoItem extends Component{
     
         return (
             <div className='toDoItem'>
-                <span className={toDoClass} /* style={style}  */onClick={ this.onLabelClick } > {label} </span>
+                <span className={toDoClass} /* style={style}  */ /* onClick={ this.onLabelClick } */  onClick={onItemDone}  > {label} </span>
 
                 <button type='button' className='btn btn-outline-success btn-sm' onClick={onDeleted} >
                     <i className="fa fa-trash-o" aria-hidden="true" />
                 </button>
-                <button type='button' className='btn btn-outline-success btn-sm' onClick={this.onImportant}>
+                <button type='button' className='btn btn-outline-success btn-sm' /* onClick={this.onImportant}  */ onClick={onItemImportant}  >
                     <i className='fa fa-exclamation' />
                 </button>
                 
