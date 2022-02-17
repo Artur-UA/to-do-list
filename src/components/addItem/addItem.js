@@ -13,14 +13,17 @@ export default class AddItem extends Component {
         })
     }
     onSubmitForm = (e) => {
-        this.props.addNewItem(this.state.label)
+        e.preventDefault();
+        this.props.addNewItem(this.state.label);
+        this.setState({
+            label: ''
+        })
     }
     render(){
-        const { addNewItem } = this.props;
         return (
             <form className="addItem d-flex" onSubmit={this.onSubmitForm}>
-                <input type="text" className="form-control" placeholder="What needs to be done?" onChange={this.onLabelChange}/>
-                <button type="button" className="btn btn-outline-secondary" /* onClick={ () => addNewItem('hello')} */ >Add to do</button>
+                <input type="text" className="form-control" placeholder="What needs to be done?" onChange={this.onLabelChange} value={this.state.label} />
+                <button className="btn btn-outline-secondary" /* onClick={ () => addNewItem('hello')} */ >Add to do</button>
             </form>
         )
     }

@@ -8,7 +8,7 @@ export default class InputMainFilter extends Component{
             <div className='inputFilter'>
                 <button type='button' className='btn btn-info'>All</button>
                 <button type='button' className='btn btn-outline-second'>Active</button>
-                <button type='button' className='btn btn-outline-second'>Done</button>
+                <button type='button' className='btn btn-outline-second' onClick={ this.props.onShowDoneItem} >Done</button>
             </div>
         )
     }

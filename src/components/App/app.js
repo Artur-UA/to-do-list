@@ -21,7 +21,8 @@ export default class App extends Component{
             this.createItem('Listen music'),
             this.createItem('Create app')
 
-        ]
+        ],
+        term: ''
     }
 
     createItem(text){
@@ -104,12 +105,35 @@ export default class App extends Component{
             }
         })
     }
+
+    onSearchItem(items, term){
+        if (term.length === 0){
+            return items
+        }
+
+        return items.filter( (item) => {
+            return item.label.toLowerCase().indexOf(term.toLowerCase()) > -1 ;
+        })
+
+    }
+    onSearchItems = (text) => {
+        this.setState(() => {
+            return {
+                term: text
+            }
+        })
+    }
+
+    onShowDoneItem = () => {
+        return this.state.toDoList.filter( (el) => el.done )
+    }
+
     render(){
 
         const itemDone = this.state.toDoList.filter( (el) => el.done ).length;
         const itemToDo = this.state.toDoList.length - itemDone;
-
-
+ 
+        const visibleData = this.onSearchItem(this.state.toDoList, this.state.term)
         const isLoggin = true;
         const ButtonLogin = <button>Log in</button>
     
@@ -118,9 +142,9 @@ export default class App extends Component{
                 {isLoggin ? null : ButtonLogin}
                 {/* <span>{ new Date().toString() }</span> */}
                 <AppHeader toDo={itemToDo} toDone={itemDone}/>
-                <InputMainPage/>
-                <InputMainFilter/>
-                <Todo todos={this.state.toDoList} onDel={ /* (id) => {console.log(id)} */ this.onDele } onItemDone={this.onItemDone} onItemImportant={this.onItemImportant}/>
+                <InputMainPage onSearchItem={this.onSearchItems} />
+                <InputMainFilter onShowDoneItem={this.onShowDoneItem} /> 
+                <Todo todos={visibleData} onDel={ /* (id) => {console.log(id)} */ this.onDele } onItemDone={this.onItemDone} onItemImportant={this.onItemImportant}/>
                 <AddItem addNewItem={this.addNewItems}/>
             </div>
         )
