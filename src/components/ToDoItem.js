@@ -47,12 +47,15 @@ export default class ToDoItem extends Component{
             <div className='toDoItem'>
                 <span className={toDoClass} /* style={style}  */ /* onClick={ this.onLabelClick } */  onClick={onItemDone}  > {label} </span>
 
-                <button type='button' className='btn btn-outline-success btn-sm' onClick={onDeleted} >
-                    <i className="fa fa-trash-o" aria-hidden="true" />
-                </button>
-                <button type='button' className='btn btn-outline-success btn-sm' /* onClick={this.onImportant}  */ onClick={onItemImportant}  >
-                    <i className='fa fa-exclamation' />
-                </button>
+                <span className='itemButtonBox'>
+                    <button type='button' className='btn btn-outline-success btn-sm' onClick={onDeleted} >
+                        <i className="fa fa-trash-o" aria-hidden="true" />
+                    </button>
+                    <button type='button' className='btn btn-outline-success btn-sm' /* onClick={this.onImportant}  */ onClick={onItemImportant}  >
+                        <i className='fa fa-exclamation' />
+                    </button>
+                </span>
+                
                 
             </div>
         )

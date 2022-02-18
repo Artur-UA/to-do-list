@@ -6,7 +6,6 @@ import Todo from '../ToDo';
 import InputMainFilter from '../InputMainFilter';
 import AddItem from '../addItem/addItem';
 import './app.css';
-import { render } from '@testing-library/react';
 
 export default class App extends Component{
 
@@ -14,15 +13,13 @@ export default class App extends Component{
 
     state = {
         toDoList : [
-            /* {label: 'Learn React', important: false, id: 1},
-            {label: 'Listen music', important: true, id: 2},
-            {label: 'Create app', important: false, id: 3} */
             this.createItem('Learn React'),
             this.createItem('Listen music'),
             this.createItem('Create app')
 
         ],
-        term: ''
+        term: '',
+        filter: 'all'
     }
 
     createItem(text){
@@ -36,7 +33,6 @@ export default class App extends Component{
 
 
     onDele = (id) => {
-        /* console.log(id); */
         this.setState( (state) => {
             const idx = state.toDoList.findIndex( (el) => el.id === id);
             const before = state.toDoList.slice(0, idx);
@@ -63,11 +59,6 @@ export default class App extends Component{
     addNewItems = (text) =>{
         console.log(text);
         const newItem = this.createItem(text)
-       /*  const newItem = {
-            label: text,
-            important: false,
-            id: this.startId++
-        } */
         this.setState( (state) => {
             const newAddIdState = [ ...state.toDoList, newItem];
             return{
@@ -87,19 +78,7 @@ export default class App extends Component{
     onItemDone = (id) => {
         console.log('done', id);
         this.setState( (state) => {
-            /* const idx = state.toDoList.findIndex( (el) => el.id === id);
-            const oldItem = state.toDoList[idx];
-            const newItem = {...oldItem, done: !oldItem.done};
-
-            const newArr = [
-                ...state.toDoList.slice(0, idx),
-                newItem,
-                ...state.toDoList.slice(idx + 1)
-            ]
-
-            return {
-                toDoList: newArr
-            } */
+  
             return {
                 toDoList: this.toggleProperty( state.toDoList, id, 'done' )
             }
@@ -124,55 +103,47 @@ export default class App extends Component{
         })
     }
 
-    onShowDoneItem = () => {
-        return this.state.toDoList.filter( (el) => el.done )
+    onFilterItems = (name) => {
+        this.setState(() => {
+            return {
+                filter: name
+            }
+        })
     }
+
+    onFilterItem(items, filter){
+        switch(filter){
+            case 'all': 
+                return items;
+            case 'done':
+                return items.filter( (item) => item.done);
+            case 'active':
+                return items.filter( (item) => !item.done);
+            default:
+                return items;
+        }
+    }
+
+
 
     render(){
 
         const itemDone = this.state.toDoList.filter( (el) => el.done ).length;
         const itemToDo = this.state.toDoList.length - itemDone;
  
-        const visibleData = this.onSearchItem(this.state.toDoList, this.state.term)
+        const visibleData = this.onFilterItem(this.onSearchItem(this.state.toDoList, this.state.term), this.state.filter);
         const isLoggin = true;
         const ButtonLogin = <button>Log in</button>
     
         return (
             <div className='main'>
                 {isLoggin ? null : ButtonLogin}
-                {/* <span>{ new Date().toString() }</span> */}
                 <AppHeader toDo={itemToDo} toDone={itemDone}/>
                 <InputMainPage onSearchItem={this.onSearchItems} />
-                <InputMainFilter onShowDoneItem={this.onShowDoneItem} /> 
+                <InputMainFilter filter={this.state.filter} onFilterItems = {this.onFilterItems}  /> 
                 <Todo todos={visibleData} onDel={ /* (id) => {console.log(id)} */ this.onDele } onItemDone={this.onItemDone} onItemImportant={this.onItemImportant}/>
                 <AddItem addNewItem={this.addNewItems}/>
             </div>
         )
     }
 }
-
-/* const App = () => {
-    const toDoList = [
-        {label: 'Learn React', important: false, id: 1},
-        {label: 'Listen music', important: true, id: 2},
-        {label: 'Create app', important: false, id: 3}
-    ];
-
-    const itemToDo = 1
-    const itemDone = 3;
-    const isLoggin = true;
-    const ButtonLogin = <button>Log in</button>
-
-    return (
-        <div className='main'>
-            {isLoggin ? null : ButtonLogin}
-            {// <span>{ new Date().toString() }</span> //}
-            <AppHeader toDo={itemToDo} toDone={itemDone}/>
-            <InputMainPage/>
-            <InputMainFilter/>
-            <Todo todos={toDoList} onDel={ (id) => {console.log(id)} }/>
-        </div>
-    )
-}
-
-export default App; */
